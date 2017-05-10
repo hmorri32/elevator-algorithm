@@ -22,8 +22,7 @@ describe('Elevator', function() {
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [2, 5]);
 
-    elevator.getTotalFloors(person)
-    assert.equal(elevator.totalFloors, 6)
+    assert.equal(elevator.totalFloors, 5)
   });
 
   it('should bring a rider to a floor below their current floor', () => {
@@ -45,9 +44,8 @@ describe('Elevator', function() {
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [2, 5]);
 
-    elevator.getTotalFloors(person)
 
-    assert.equal(elevator.totalFloors, 6)
+    assert.equal(elevator.totalFloors, 5)
   })
 
   it('should calculate amount of floors traversed going down', () => {
@@ -58,9 +56,7 @@ describe('Elevator', function() {
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [8, 3]);
 
-    elevator.getTotalFloors(person)
-
-    assert.equal(elevator.totalFloors, 10)
+    assert.equal(elevator.totalFloors, 13)
   })
 
   it('should reset', () => {
@@ -70,7 +66,7 @@ describe('Elevator', function() {
 
     assert.equal(elevator.currentFloor, 2);
     assert.deepEqual(elevator.getStops(), [5, 2]);
-    assert.equal(elevator.totalFloors, 6);
+    assert.equal(elevator.totalFloors, 8);
 
     elevator.reset();
 
@@ -135,14 +131,14 @@ describe('Elevator', function() {
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [1, 5]);
-    assert.equal(elevator.totalFloors, 8)
+    assert.equal(elevator.totalFloors, 5)
 
     elevator.goToFloor(billyBob)
     assert.equal(elevator.currentFloor, 6)
     assert.equal(elevator.motionStatus, 'idle')
     assert.deepEqual(elevator.getStops(), [2, 6]);
-    assert.equal(elevator.totalFloors, 7)
-    assert.equal(elevator.stops.length, 2)
+    assert.equal(elevator.totalFloors, 12)
+    assert.equal(elevator.stops.length, 8)
   })
 
   it('should allow A to go up, then B to go down, then count stops and totalFloors', () => {
@@ -158,15 +154,15 @@ describe('Elevator', function() {
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [1, 5]);
-    assert.equal(elevator.totalFloors, 8)
+    assert.equal(elevator.totalFloors, 5)
 
     elevator.goToFloor(billyBob)
     
     assert.equal(elevator.currentFloor, 2)
     assert.equal(elevator.motionStatus, 'idle')
     assert.deepEqual(elevator.getStops(), [7, 2]);
-    assert.equal(elevator.totalFloors, 7)
-    assert.equal(elevator.stops.length, 2)
+    assert.equal(elevator.totalFloors, 12)
+    assert.equal(elevator.stops.length, 8)
   })
 
   it('should allow A to go down, then B to go up, then count stops and totalFloors', () => {
@@ -189,8 +185,9 @@ describe('Elevator', function() {
     assert.equal(elevator.currentFloor, 7)
     assert.equal(elevator.motionStatus, 'idle')
     assert.deepEqual(elevator.getStops(), [2, 7]);
-    assert.equal(elevator.totalFloors, 8)
-    assert.equal(elevator.stops.length, 2)
+    assert.equal(elevator.totalFloors, 23)
+    assert.equal(elevator.stops.length, 8)
+
   })
 
 

@@ -9,7 +9,7 @@ export default class Elevator {
   	this.direction 	 	= '';
   }
 
-  goToFloor(person){
+  goToFloor(person) {
   	this.requests.push(person)
 
   	const { name, currentFloor, dropOffFloor } = person
@@ -20,6 +20,8 @@ export default class Elevator {
     this.riders.push(name)
   	this.stops.push(this.currentFloor)
     this.getStops()
+    this.currentFloor = dropOffFloor
+    this.stops.push(this.currentFloor)
   	this.motionStatus = 'idle'
   	this.riderExit()
   }
@@ -32,32 +34,42 @@ export default class Elevator {
   	return this.riders.shift()
   }
 
-  getTotalFloors(request) {
+  // getTotalFloors(request) {
 
-  	const { currentFloor, dropOffFloor } = request
+  // 	const { currentFloor, dropOffFloor } = request
 
-    // WTF!?
+  //   // WTF!?
 
-  	this.totalFloors = Math.abs(this.currentFloor - currentFloor) + Math.abs(currentFloor - dropOffFloor)
+  // 	this.totalFloors = Math.abs(this.currentFloor - currentFloor) + Math.abs(currentFloor - dropOffFloor)
+  // }
 
-  	this.currentFloor = dropOffFloor
+  countFloors(array) {
+    let temp = 0
+    array.unshift(0)
+
+    for(let i = (array.length - 1); i >= 1; i--) {
+      temp = temp + Math.abs(array[i] - array[i-1])
+    }
+
+    // this.stops.splice(0,1)
+    console.log(temp)
+    return this.totalFloors = temp
   }
 
   getStops() {
-    console.log(this.totalFloors)
+    this.countFloors(this.stops)
+    
     const { currentFloor, dropOffFloor } = this.requests
 
     return this.requests.reduce((arr, request) => {
       arr = []
-
-      this.getTotalFloors(request)
 
   		arr.push(request.currentFloor, request.dropOffFloor)
   		return arr
   	}, [])
   }
 
-  reset(){
+  reset() {
   	this.constructor()
   }
 }
