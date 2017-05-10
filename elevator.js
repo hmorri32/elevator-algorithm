@@ -26,15 +26,15 @@ export default class Elevator {
   	this.riderExit()
   }
 
-  elevatorDirection(currentFloor, dropOffFloor) {
-  	return currentFloor < dropOffFloor ? 'up' : 'down';
+  elevatorDirection(current, drop) {
+  	return current < drop ? 'up' : 'down';
   }
 
   riderExit() {
   	return this.riders.shift()
   }
 
-  // getTotalFloors(request) {
+  // countFloors(request) {
 
   // 	const { currentFloor, dropOffFloor } = request
 
@@ -43,15 +43,16 @@ export default class Elevator {
   // 	this.totalFloors = Math.abs(this.currentFloor - currentFloor) + Math.abs(currentFloor - dropOffFloor)
   // }
 
-  countFloors(array) {
+  countFloors(stops) {
     let temp = 0
-    array.unshift(0)
+    stops.unshift(0)
 
-    for(let i = (array.length - 1); i >= 1; i--) {
-      temp = temp + Math.abs(array[i] - array[i-1])
+    for(let i = (stops.length - 1); i >= 1; i--) {
+      temp = temp + Math.abs(stops[i] - stops[i-1])
     }
 
     console.log(temp)
+    
     return this.totalFloors = temp
   }
 
