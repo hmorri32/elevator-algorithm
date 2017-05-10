@@ -16,7 +16,7 @@ export default class Elevator {
 
   	this.motionStatus = 'moving';
   	this.currentFloor = currentFloor
-  	this.direction 		= this.elevatorDirection(currentFloor, dropOffFloor)
+    this.direction    = this.elevatorDirection(currentFloor, dropOffFloor)
   	this.stops.push(this.currentFloor)
   	this.riders.push(name)
   	this.getStops()
@@ -25,7 +25,7 @@ export default class Elevator {
   }
 
   elevatorDirection(currentFloor, dropOffFloor) {
-  	return currentFloor > dropOffFloor ? 'up' : 'down';
+  	return currentFloor < dropOffFloor ? 'up' : 'down';
   }
 
   riderExit() {

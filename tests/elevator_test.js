@@ -14,7 +14,7 @@ describe('Elevator', function() {
   });
 
   it('should bring a rider to a floor above their current floor', () => {
-    let person = new Person('Brittany', 2, 5)
+    let person = new Person({name:'Brittany',currentFloor: 2, dropOffFloor: 5})
 
     elevator.goToFloor(person);
 
@@ -27,7 +27,7 @@ describe('Elevator', function() {
   });
 
   it('should bring a rider to a floor below their current floor', () => {
-    let person = new Person('Brittany', 8, 3)
+    let person = new Person({ name:'Brittany',currentFloor: 8, dropOffFloor: 3})
 
     elevator.goToFloor(person);
 
@@ -37,7 +37,7 @@ describe('Elevator', function() {
   });
 
   it('should calculate amount of floors traversed going up', () => {
-    let person = new Person('Brittany', 2, 5)
+    let person = new Person({name:'Brittany', currentFloor: 2, dropOffFloor: 5})
 
     elevator.goToFloor(person)
 
@@ -51,8 +51,7 @@ describe('Elevator', function() {
   })
 
   it('should calculate amount of floors traversed going down', () => {
-    let person = new Person('Brittany', 8, 3)
-
+    let person = new Person({ name:'Brittany',currentFloor: 8, dropOffFloor: 3})
     elevator.goToFloor(person)
 
     assert.equal(elevator.currentFloor, 3);
@@ -65,7 +64,7 @@ describe('Elevator', function() {
   })
 
   it('should reset', () => {
-    let person = new Person('suhDude', 5,  2);
+    let person = new Person({name: 'suhDude',currentFloor: 5, dropOffFloor: 2});
 
     elevator.goToFloor(person);
 
@@ -82,14 +81,50 @@ describe('Elevator', function() {
     assert.deepEqual(elevator.requests, []);
   });
 
+  it('getStops should deliver a person, reset, then deliver the next', () => {
+    let bob  = new Person({
+      name: 'Brittany', currentFloor: 5,dropOffFloor: 3
+    });
+
+    let sue = new Person({
+      name: 'Robbie', currentFloor: 7,  dropOffFloor: 1
+    });
+
+    elevator.goToFloor(bob);
+    assert.deepEqual(elevator.getStops(), [5, 3]);
+    assert.equal(elevator.currentFloor, 3)
+    elevator.goToFloor(sue);
+    assert.deepEqual(elevator.getStops(), [7, 1]);
+    assert.equal(elevator.currentFloor, 1)
+
+  });
+
+  it('should ascertain elevator direction going up', () => {
+    let person = new Person({ name: 'suhDude',currentFloor: 2, dropOffFloor: 10 })
+    
+    elevator.goToFloor(person)
+    assert.equal(elevator.direction, 'up')
+    assert.equal(elevator.currentFloor, 10)
+  })
+
+  it('should ascertain elevator direction going down', () => {
+    let person = new Person({ name: 'suhDude',currentFloor: 10, dropOffFloor: 2 })
+    
+    elevator.goToFloor(person)
+    assert.equal(elevator.direction, 'down')
+    assert.equal(elevator.currentFloor, 2)
+  })
+
+  it('should allow a rider to exit the elevator', () => {
+    let person = new Person({ name: 'suhDude',currentFloor: 10, dropOffFloor: 2 })
+
+    elevator.goToFloor(person)
+    
+    assert.equal(elevator.riders.length, 0)
+  })
+
 
 });
-
-describe('elveator unit tests', () => {
-  it('testing reset', () => {
-
-  })
-})
 
 
 
