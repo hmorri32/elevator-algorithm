@@ -189,6 +189,30 @@ describe('Elevator', function() {
     assert.equal(elevator.stops.length, 8)
 
   })
+  it('should allow A to go down, then B to go down, then count stops and totalFloors', () => {
+    let sallyMcgee = new Person({ 
+      name: 'sally', currentFloor: 10, dropOffFloor: 5
+    })
+    let billyBob = new Person({
+      name: 'billy', currentFloor: 5, dropOffFloor: 1
+    })
+
+    elevator.goToFloor(sallyMcgee)
+
+    assert.equal(elevator.currentFloor, 5);
+    assert.equal(elevator.motionStatus, 'idle');
+    assert.deepEqual(elevator.getStops(), [10, 5]);
+    assert.equal(elevator.totalFloors, 15)
+
+    elevator.goToFloor(billyBob)
+
+    assert.equal(elevator.currentFloor, 1)
+    assert.equal(elevator.motionStatus, 'idle')
+    assert.deepEqual(elevator.getStops(), [5, 1]);
+    assert.equal(elevator.totalFloors, 19)
+    assert.equal(elevator.stops.length, 8)
+
+  })
 
 
 

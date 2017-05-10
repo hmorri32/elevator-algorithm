@@ -51,7 +51,6 @@ export default class Elevator {
       temp = temp + Math.abs(array[i] - array[i-1])
     }
 
-    // this.stops.splice(0,1)
     console.log(temp)
     return this.totalFloors = temp
   }
