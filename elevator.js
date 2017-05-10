@@ -17,9 +17,9 @@ export default class Elevator {
   	this.motionStatus = 'moving';
   	this.currentFloor = currentFloor
     this.direction    = this.elevatorDirection(currentFloor, dropOffFloor)
+    this.riders.push(name)
   	this.stops.push(this.currentFloor)
-  	this.riders.push(name)
-  	this.getStops()
+    this.getStops()
   	this.motionStatus = 'idle'
   	this.riderExit()
   }
@@ -33,7 +33,10 @@ export default class Elevator {
   }
 
   getTotalFloors(request) {
+
   	const { currentFloor, dropOffFloor } = request
+
+    // WTF!?
 
   	this.totalFloors = Math.abs(this.currentFloor - currentFloor) + Math.abs(currentFloor - dropOffFloor)
 
@@ -41,12 +44,13 @@ export default class Elevator {
   }
 
   getStops() {
-  	const { currentFloor, dropOffFloor } = this.requests
+    console.log(this.totalFloors)
+    const { currentFloor, dropOffFloor } = this.requests
 
-  	return this.requests.reduce((arr, request) => {
-  		arr = []
+    return this.requests.reduce((arr, request) => {
+      arr = []
 
-  		this.getTotalFloors(request)
+      this.getTotalFloors(request)
 
   		arr.push(request.currentFloor, request.dropOffFloor)
   		return arr

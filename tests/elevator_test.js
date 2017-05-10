@@ -119,9 +119,81 @@ describe('Elevator', function() {
     let person = new Person({ name: 'suhDude',currentFloor: 10, dropOffFloor: 2 })
 
     elevator.goToFloor(person)
-    
+
     assert.equal(elevator.riders.length, 0)
   })
+
+  it('should allow A to go up, then B to go up, then count stops and totalFloors', () => {
+    let sallyMcgee = new Person({ 
+      name: 'sally', currentFloor: 1, dropOffFloor: 5
+    })
+    let billyBob = new Person({
+      name: 'billy', currentFloor: 2, dropOffFloor: 6
+    })
+    elevator.goToFloor(sallyMcgee)
+
+    assert.equal(elevator.currentFloor, 5);
+    assert.equal(elevator.motionStatus, 'idle');
+    assert.deepEqual(elevator.getStops(), [1, 5]);
+    assert.equal(elevator.totalFloors, 8)
+
+    elevator.goToFloor(billyBob)
+    assert.equal(elevator.currentFloor, 6)
+    assert.equal(elevator.motionStatus, 'idle')
+    assert.deepEqual(elevator.getStops(), [2, 6]);
+    assert.equal(elevator.totalFloors, 7)
+    assert.equal(elevator.stops.length, 2)
+  })
+
+  it('should allow A to go up, then B to go down, then count stops and totalFloors', () => {
+    let sallyMcgee = new Person({ 
+      name: 'sally', currentFloor: 1, dropOffFloor: 5
+    })
+    let billyBob = new Person({
+      name: 'billy', currentFloor: 7, dropOffFloor: 2
+    })
+
+    elevator.goToFloor(sallyMcgee)
+
+    assert.equal(elevator.currentFloor, 5);
+    assert.equal(elevator.motionStatus, 'idle');
+    assert.deepEqual(elevator.getStops(), [1, 5]);
+    assert.equal(elevator.totalFloors, 8)
+
+    elevator.goToFloor(billyBob)
+    
+    assert.equal(elevator.currentFloor, 2)
+    assert.equal(elevator.motionStatus, 'idle')
+    assert.deepEqual(elevator.getStops(), [7, 2]);
+    assert.equal(elevator.totalFloors, 7)
+    assert.equal(elevator.stops.length, 2)
+  })
+
+  it('should allow A to go down, then B to go up, then count stops and totalFloors', () => {
+    let sallyMcgee = new Person({ 
+      name: 'sally', currentFloor: 10, dropOffFloor: 5
+    })
+    let billyBob = new Person({
+      name: 'billy', currentFloor: 2, dropOffFloor: 7
+    })
+
+    elevator.goToFloor(sallyMcgee)
+
+    assert.equal(elevator.currentFloor, 5);
+    assert.equal(elevator.motionStatus, 'idle');
+    assert.deepEqual(elevator.getStops(), [10, 5]);
+    assert.equal(elevator.totalFloors, 15)
+
+    elevator.goToFloor(billyBob)
+
+    assert.equal(elevator.currentFloor, 7)
+    assert.equal(elevator.motionStatus, 'idle')
+    assert.deepEqual(elevator.getStops(), [2, 7]);
+    assert.equal(elevator.totalFloors, 8)
+    assert.equal(elevator.stops.length, 2)
+  })
+
+
 
 
 });
