@@ -16,7 +16,7 @@ describe('Elevator', function() {
   it('should bring a rider to a floor above their current floor', () => {
     let person = new Person({name:'Brittany',currentFloor: 2, dropOffFloor: 5})
 
-    elevator.goToFloor(person);
+    elevator.elevatorLifeCycle(person);
 
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
@@ -28,7 +28,7 @@ describe('Elevator', function() {
   it('should bring a rider to a floor below their current floor', () => {
     let person = new Person({ name:'Brittany',currentFloor: 8, dropOffFloor: 3})
 
-    elevator.goToFloor(person);
+    elevator.elevatorLifeCycle(person);
 
     assert.equal(elevator.currentFloor, 3);
     assert.equal(elevator.motionStatus, 'idle');
@@ -38,7 +38,7 @@ describe('Elevator', function() {
   it('should calculate amount of floors traversed going up', () => {
     let person = new Person({name:'Brittany', currentFloor: 2, dropOffFloor: 5})
 
-    elevator.goToFloor(person)
+    elevator.elevatorLifeCycle(person)
 
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
@@ -50,7 +50,7 @@ describe('Elevator', function() {
 
   it('should calculate amount of floors traversed going down', () => {
     let person = new Person({ name:'Brittany',currentFloor: 8, dropOffFloor: 3})
-    elevator.goToFloor(person)
+    elevator.elevatorLifeCycle(person)
 
     assert.equal(elevator.currentFloor, 3);
     assert.equal(elevator.motionStatus, 'idle');
@@ -62,7 +62,7 @@ describe('Elevator', function() {
   it('should reset', () => {
     let person = new Person({name: 'suhDude',currentFloor: 5, dropOffFloor: 2});
 
-    elevator.goToFloor(person);
+    elevator.elevatorLifeCycle(person);
 
     assert.equal(elevator.currentFloor, 2);
     assert.deepEqual(elevator.getStops(), [5, 2]);
@@ -86,10 +86,11 @@ describe('Elevator', function() {
       name: 'Robbie', currentFloor: 7,  dropOffFloor: 1
     });
 
-    elevator.goToFloor(bob);
+    elevator.elevatorLifeCycle(bob);
     assert.deepEqual(elevator.getStops(), [5, 3]);
     assert.equal(elevator.currentFloor, 3)
-    elevator.goToFloor(sue);
+
+    elevator.elevatorLifeCycle(sue);
     assert.deepEqual(elevator.getStops(), [7, 1]);
     assert.equal(elevator.currentFloor, 1)
 
@@ -98,7 +99,7 @@ describe('Elevator', function() {
   it('should ascertain elevator direction going up', () => {
     let person = new Person({ name: 'suhDude',currentFloor: 2, dropOffFloor: 10 })
     
-    elevator.goToFloor(person)
+    elevator.elevatorLifeCycle(person)
     assert.equal(elevator.direction, 'up')
     assert.equal(elevator.currentFloor, 10)
   })
@@ -106,7 +107,7 @@ describe('Elevator', function() {
   it('should ascertain elevator direction going down', () => {
     let person = new Person({ name: 'suhDude',currentFloor: 10, dropOffFloor: 2 })
     
-    elevator.goToFloor(person)
+    elevator.elevatorLifeCycle(person)
     assert.equal(elevator.direction, 'down')
     assert.equal(elevator.currentFloor, 2)
   })
@@ -114,26 +115,26 @@ describe('Elevator', function() {
   it('should allow a rider to exit the elevator', () => {
     let person = new Person({ name: 'suhDude',currentFloor: 10, dropOffFloor: 2 })
 
-    elevator.goToFloor(person)
+    elevator.elevatorLifeCycle(person)
 
     assert.equal(elevator.riders.length, 0)
   })
 
-  it('should allow A to go up, then B to go up, then count stops and totalFloors', () => {
+  it('LVL4 - should allow A to go up, then B to go up, then count stops and totalFloors', () => {
     let sallyMcgee = new Person({ 
       name: 'sally', currentFloor: 1, dropOffFloor: 5
     })
     let billyBob = new Person({
       name: 'billy', currentFloor: 2, dropOffFloor: 6
     })
-    elevator.goToFloor(sallyMcgee)
+    elevator.elevatorLifeCycle(sallyMcgee)
 
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [1, 5]);
     assert.equal(elevator.totalFloors, 5)
 
-    elevator.goToFloor(billyBob)
+    elevator.elevatorLifeCycle(billyBob)
     assert.equal(elevator.currentFloor, 6)
     assert.equal(elevator.motionStatus, 'idle')
     assert.deepEqual(elevator.getStops(), [2, 6]);
@@ -141,7 +142,7 @@ describe('Elevator', function() {
     assert.equal(elevator.stops.length, 8)
   })
 
-  it('should allow A to go up, then B to go down, then count stops and totalFloors', () => {
+  it('LVL4 - should allow A to go up, then B to go down, then count stops and totalFloors', () => {
     let sallyMcgee = new Person({ 
       name: 'sally', currentFloor: 1, dropOffFloor: 5
     })
@@ -149,14 +150,14 @@ describe('Elevator', function() {
       name: 'billy', currentFloor: 7, dropOffFloor: 2
     })
 
-    elevator.goToFloor(sallyMcgee)
+    elevator.elevatorLifeCycle(sallyMcgee)
 
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [1, 5]);
     assert.equal(elevator.totalFloors, 5)
 
-    elevator.goToFloor(billyBob)
+    elevator.elevatorLifeCycle(billyBob)
     
     assert.equal(elevator.currentFloor, 2)
     assert.equal(elevator.motionStatus, 'idle')
@@ -165,7 +166,7 @@ describe('Elevator', function() {
     assert.equal(elevator.stops.length, 8)
   })
 
-  it('should allow A to go down, then B to go up, then count stops and totalFloors', () => {
+  it('LVL4 - should allow A to go down, then B to go up, then count stops and totalFloors', () => {
     let sallyMcgee = new Person({ 
       name: 'sally', currentFloor: 10, dropOffFloor: 5
     })
@@ -173,14 +174,14 @@ describe('Elevator', function() {
       name: 'billy', currentFloor: 2, dropOffFloor: 7
     })
 
-    elevator.goToFloor(sallyMcgee)
+    elevator.elevatorLifeCycle(sallyMcgee)
 
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [10, 5]);
     assert.equal(elevator.totalFloors, 15)
 
-    elevator.goToFloor(billyBob)
+    elevator.elevatorLifeCycle(billyBob)
 
     assert.equal(elevator.currentFloor, 7)
     assert.equal(elevator.motionStatus, 'idle')
@@ -189,7 +190,8 @@ describe('Elevator', function() {
     assert.equal(elevator.stops.length, 8)
 
   })
-  it('should allow A to go down, then B to go down, then count stops and totalFloors', () => {
+
+  it('LVL4 - should allow A to go down, then B to go down, then count stops and totalFloors', () => {
     let sallyMcgee = new Person({ 
       name: 'sally', currentFloor: 10, dropOffFloor: 5
     })
@@ -197,25 +199,39 @@ describe('Elevator', function() {
       name: 'billy', currentFloor: 5, dropOffFloor: 1
     })
 
-    elevator.goToFloor(sallyMcgee)
+    elevator.elevatorLifeCycle(sallyMcgee)
 
     assert.equal(elevator.currentFloor, 5);
     assert.equal(elevator.motionStatus, 'idle');
     assert.deepEqual(elevator.getStops(), [10, 5]);
     assert.equal(elevator.totalFloors, 15)
 
-    elevator.goToFloor(billyBob)
+    elevator.elevatorLifeCycle(billyBob)
 
     assert.equal(elevator.currentFloor, 1)
     assert.equal(elevator.motionStatus, 'idle')
     assert.deepEqual(elevator.getStops(), [5, 1]);
     assert.equal(elevator.totalFloors, 19)
     assert.equal(elevator.stops.length, 8)
-
   })
 
+  it('elevator should return to lobby if before 12pm', () => {
+    let chillGuy = new Person({
+      name: 'chad', currentFloor: 5, dropOffFloor: 2, requestTime: '6am'
+    })
 
+    elevator.elevatorLifeCycle(chillGuy)
+    assert.equal(elevator.currentFloor, 0)
+  })
 
+  it('elevator should not return to lobby if after 12pm', () => {
+    let coolDude = new Person({
+      name: 'rodrigo', currentFloor: 5, dropOffFloor: 10, requestTime: '6pm'
+    })
+
+    elevator.elevatorLifeCycle(coolDude)
+    assert.equal(elevator.currentFloor, 10)
+  })
 
 });
 

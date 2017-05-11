@@ -9,39 +9,50 @@ export default class Elevator {
   	this.direction 	 	= '';
   }
 
-  goToFloor(person) {
-  	this.requests.push(person)
+  makeRequest(person) {
+    this.requests.push(person)
+  }
 
-  	const { name, currentFloor, dropOffFloor } = person
-
-  	this.motionStatus = 'moving';
-  	this.currentFloor = currentFloor
-    this.direction    = this.elevatorDirection(currentFloor, dropOffFloor)
+  addRider(name) {
     this.riders.push(name)
-  	this.stops.push(this.currentFloor)
+  }
+
+  addStop(floor) {
+    this.stops.push(floor)
+  }
+
+  elevatorLifeCycle(person) {
+    const { name, currentFloor, dropOffFloor, requestTime } = person
+    
+    this.makeRequest(person)
+    this.motionStatus = 'moving';
+    this.direction    = this.elevatorDirection(currentFloor, dropOffFloor)
+    this.currentFloor = currentFloor
+    this.addRider(name)
+    this.addStop(this.currentFloor)
     this.getStops()
-    this.currentFloor = dropOffFloor
-    this.stops.push(this.currentFloor)
-  	this.motionStatus = 'idle'
-  	this.riderExit()
+    this.riderExit(person)
+    this.floorZero(requestTime)
+  }
+
+  floorZero(time) {
+    if(!time){return}
+
+    time.includes('am') ? this.currentFloor = 0 : this.currentFloor  
   }
 
   elevatorDirection(current, drop) {
-  	return current < drop ? 'up' : 'down';
+    return current < drop ? 'up' : 'down';
   }
 
-  riderExit() {
-  	return this.riders.shift()
+  riderExit(person) {
+    const { currentFloor, dropOffFloor } = person
+
+    this.currentFloor = dropOffFloor
+    this.addStop(this.currentFloor)
+    this.riders.shift()
+    this.motionStatus = 'idle'
   }
-
-  // countFloors(request) {
-
-  // 	const { currentFloor, dropOffFloor } = request
-
-  //   // WTF!?
-
-  // 	this.totalFloors = Math.abs(this.currentFloor - currentFloor) + Math.abs(currentFloor - dropOffFloor)
-  // }
 
   countFloors(stops) {
     let temp = 0
@@ -49,21 +60,17 @@ export default class Elevator {
 
     for(let i = (stops.length - 1); i >= 1; i--) {
       temp = temp + Math.abs(stops[i] - stops[i-1])
-    }
-
-    console.log(temp)
-    
+    }    
     return this.totalFloors = temp
   }
 
   getStops() {
-    this.countFloors(this.stops)
-    
     const { currentFloor, dropOffFloor } = this.requests
+
+    this.countFloors(this.stops)
 
     return this.requests.reduce((arr, request) => {
       arr = []
-
   		arr.push(request.currentFloor, request.dropOffFloor)
   		return arr
   	}, [])
