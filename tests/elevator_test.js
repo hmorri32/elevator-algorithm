@@ -284,7 +284,6 @@ describe('Unit tests', () => {
 
   it('should ascertain yung elevator direction', () => {
     const { currentFloor, dropOffFloor } = coolGuy
-    console.log(currentFloor, dropOffFloor)
     
     assert.equal(elevator.elevatorDirection(currentFloor, dropOffFloor), 'down')
   })

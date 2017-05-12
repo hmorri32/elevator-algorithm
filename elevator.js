@@ -66,7 +66,7 @@ export default class Elevator {
 
   getStops() {
     this.countFloors(this.stops);
-
+    
     return this.requests.reduce((arr, request) => {
       arr = [];
       arr.push(request.currentFloor, request.dropOffFloor);
