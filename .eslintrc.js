@@ -1,3 +1,4 @@
+// http://eslint.org/docs/rules/
 module.exports = {
     "env": {
         "browser": true,

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 require('babel-core/register')({
   ignore: /node_modules\/(?!ProjectB)/
 });
@@ -234,6 +236,75 @@ describe('Elevator', function() {
   })
 
 });
+
+describe('Unit tests', () => {
+  let elevator  = new Elevator();
+  let coolGuy   = new Person({
+    name: 'ricoSuave', currentFloor: 2, dropOffFloor: 1
+  })
+
+  afterEach(function() {
+    elevator.reset();
+  });
+
+  it('should make a request', () => {
+    elevator.makeRequest(coolGuy)
+    assert.equal(elevator.requests.length, 1)
+  })
+
+  it('should add a rider', () => {
+    let rico = coolGuy.name
+    elevator.addRider(rico)
+    assert.equal(elevator.riders, 'ricoSuave')
+  })
+
+  it('should add a stop', () => {
+    let ricosFloor = coolGuy.dropOffFloor
+    elevator.addStop(ricosFloor)
+
+    assert.equal(elevator.stops, 1)
+  })
+
+  it('should run through the elevatorLifeCycle', () => {
+    elevator.elevatorLifeCycle(coolGuy)
+
+    assert.equal(elevator.currentFloor, 1);
+    assert.equal(elevator.motionStatus, 'idle');
+    assert.deepEqual(elevator.getStops(), [2, 1]);
+    assert.equal(elevator.totalFloors, 3)
+  })
+
+  it('should floorZero if time includes AM', () => {
+    let punctualDude = new Person({ requestTime: '6am' })
+    let coolGuysTime = punctualDude.requestTime;
+
+    elevator.floorZero(coolGuysTime)
+    assert.equal(elevator.currentFloor, 0)
+  })
+
+  it('should ascertain yung elevator direction', () => {
+    const { currentFloor, dropOffFloor } = coolGuy
+    console.log(currentFloor, dropOffFloor)
+    
+    assert.equal(elevator.elevatorDirection(currentFloor, dropOffFloor), 'down')
+  })
+
+  it('should allow rider to exit elevator', () => {
+    elevator.riderExit(coolGuy)
+    assert.equal(elevator.riders.length, 0)
+  })
+
+  it('should count floors', () => {
+    let stops = [1, 4, 2, 1, 0]
+    assert.equal(elevator.countFloors(stops), 8)
+  })
+
+  it('should get stops', () => {
+    elevator.elevatorLifeCycle(coolGuy)
+
+    assert.deepEqual(elevator.getStops(), [2, 1])
+  })
+})
 
 
 
